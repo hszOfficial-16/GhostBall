@@ -25,7 +25,7 @@
     <ClCompile Include="GameMedia.cpp" />
     <ClCompile Include="GameObjectPool.cpp" />
     <ClCompile Include="GameScene.cpp" />
-    <ClCompile Include="GameSourcePool.cpp" />
+    <ClCompile Include="GameResourceManager.cpp" />
     <ClCompile Include="GameSprite.cpp" />
     <ClCompile Include="GameUI.cpp" />
   </ItemGroup>
@@ -35,7 +35,7 @@
     <ClInclude Include="GameMedia.h" />
     <ClInclude Include="GameObjectPool.h" />
     <ClInclude Include="GameScene.h" />
-    <ClInclude Include="GameSourcePool.h" />
+    <ClInclude Include="GameResourceManager.h" />
     <ClInclude Include="GameSprite.h" />
     <ClInclude Include="GameUI.h" />
   </ItemGroup>

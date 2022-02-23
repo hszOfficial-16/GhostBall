@@ -33,7 +33,7 @@
     <ClCompile Include="GameScene.cpp">
       <Filter>GameFramework\Resource</Filter>
     </ClCompile>
-    <ClCompile Include="GameSourcePool.cpp">
+    <ClCompile Include="GameResourceManager.cpp">
       <Filter>GameFramework\Resource</Filter>
     </ClCompile>
     <ClCompile Include="GameSprite.cpp">
@@ -50,7 +50,7 @@
     <ClInclude Include="GameObjectPool.h">
       <Filter>GameFramework\Header</Filter>
     </ClInclude>
-    <ClInclude Include="GameSourcePool.h">
+    <ClInclude Include="GameResourceManager.h">
       <Filter>GameFramework\Header</Filter>
     </ClInclude>
     <ClInclude Include="GameListener.h">

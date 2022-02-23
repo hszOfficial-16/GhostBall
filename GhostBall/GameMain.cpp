@@ -1,5 +1,7 @@
 #include "GameScene.h"
 
+#include "GameGraphic.h"
+
 #undef main
 int main(int argv, char* argc[])
 {

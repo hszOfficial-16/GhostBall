@@ -1,6 +1,8 @@
 #ifndef _GAME_GRAPHIC_H_
 #define _GAME_GRAPHIC_H_
 
+#include "GameResourceManager.h"
+
 class GameTexture
 {
 public:
@@ -9,29 +11,19 @@ public:
 private:
 	class Impl;
 	Impl* m_pImpl;
+
 private:
 	GameTexture();
 	~GameTexture() = default;
-	friend class TextureManager;
+	friend class GameTextureManager;
 };
 
-class TextureManager
+class GameTextureManager : public GameResourceManager<GameTexture>
 {
 public:
-
-private:
-
-public:
-	~TextureManager() = default;
-	TextureManager(const TextureManager&) = delete;
-	TextureManager& operator=(const TextureManager&) = delete;
-	static TextureManager& GetInstance()
-	{
-		static TextureManager instance;
-		return instance;
-	}
-private:
-	TextureManager();
+	void LoadFromFile(std::wstring strFile);
+	void LoadFromPath(std::wstring strPath);
+	void LoadFromPack(std::wstring strPack);
 };
 
 #endif

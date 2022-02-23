@@ -9,8 +9,8 @@ public:
 	void			Free(ObjectType* pObject);
 
 private:
-	class Impl;
-	Impl* m_pImpl;
+	class			Impl;
+	Impl*			m_pImpl;
 
 public:
 	GameObjectPool();

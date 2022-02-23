@@ -23,3 +23,8 @@ public:
 
 	}
 };
+
+void GameTextureManager::Load(std::wstring)
+{
+
+}

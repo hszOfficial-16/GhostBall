@@ -28,7 +28,8 @@ ObjectType* GameObjectPool<ObjectType, nBlockNum>::Malloc()
 {
 	if (m_pImpl->m_vFreeBlocks.empty())
 	{
-		typename Impl::MemoryChunk* pNewChunk = new Impl::MemoryChunk();
+		typename Impl::MemoryChunk* pNewChunk = new typename Impl::MemoryChunk();
+		pNewChunk->pNext = nullptr;
 		for (int i = 0; i < nBlockNum; i++)
 		{
 			m_pImpl->m_vFreeBlocks.push_back(&m_pImpl->m_pChunkHead->blocks[i]);
@@ -66,5 +67,10 @@ GameObjectPool<ObjectType, nBlockNum>::GameObjectPool()
 template<typename ObjectType, size_t nBlockNum>
 GameObjectPool<ObjectType, nBlockNum>::~GameObjectPool()
 {
+	while (m_pImpl->m_pChunkHead)
+	{
+		delete m_pImpl->m_pChunkHead;
+		m_pImpl->m_pChunkHead = m_pImpl->m_pChunkHead->pNext;
+	}
 	delete m_pImpl;
 }
