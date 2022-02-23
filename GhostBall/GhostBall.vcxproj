@@ -20,10 +20,24 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameGraphic.cpp" />
+    <ClCompile Include="GameListener.cpp" />
     <ClCompile Include="GameMain.cpp" />
+    <ClCompile Include="GameMedia.cpp" />
+    <ClCompile Include="GameObjectPool.cpp" />
+    <ClCompile Include="GameScene.cpp" />
+    <ClCompile Include="GameSourcePool.cpp" />
+    <ClCompile Include="GameSprite.cpp" />
+    <ClCompile Include="GameUI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameGraphic.h" />
+    <ClInclude Include="GameListener.h" />
+    <ClInclude Include="GameMedia.h" />
+    <ClInclude Include="GameObjectPool.h" />
+    <ClInclude Include="GameScene.h" />
+    <ClInclude Include="GameSourcePool.h" />
+    <ClInclude Include="GameSprite.h" />
+    <ClInclude Include="GameUI.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

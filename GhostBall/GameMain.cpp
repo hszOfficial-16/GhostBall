@@ -1,4 +1,4 @@
-#include <SDL.h>
+#include "GameScene.h"
 
 #undef main
 int main(int argv, char* argc[])
