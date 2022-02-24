@@ -166,7 +166,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>.\lib\Box2D\x64;.\lib\SDL2\x64;.\lib\SDL2_image\x64;.\lib\SDL2_ttf\x64;.\lib\SDL2_mixer\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SDL2.lib;SDL2_image.lib;jpeg.lib;libpng16.lib;libwebpmux.lib;lzma.lib;tiff.lib;turbojpeg.lib;webp.lib;webpdecoder.lib;webpdemux.lib;SDL2_ttf.lib;freetype.lib;brotlicommon-static.lib;brotlidec-static.lib;brotlienc-static.lib;bz2.lib;zlib.lib;SDL2_mixer.lib;FLAC.lib;FLAC++.lib;modplug.lib;mpg123.lib;ogg.lib;opus.lib;opusfile.lib;out123.lib;syn123.lib;vorbis.lib;vorbisenc.lib;vorbisfile.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Setupapi.lib;winmm.lib;imm32.lib;version.lib;Shlwapi.lib;SDL2.lib;SDL2_image.lib;jpeg.lib;libpng16.lib;libwebpmux.lib;lzma.lib;tiff.lib;turbojpeg.lib;webp.lib;webpdecoder.lib;webpdemux.lib;SDL2_ttf.lib;freetype.lib;brotlicommon-static.lib;brotlidec-static.lib;brotlienc-static.lib;bz2.lib;zlib.lib;SDL2_mixer.lib;FLAC.lib;FLAC++.lib;modplug.lib;mpg123.lib;ogg.lib;opus.lib;opusfile.lib;out123.lib;syn123.lib;vorbis.lib;vorbisenc.lib;vorbisfile.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

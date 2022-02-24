@@ -61,7 +61,7 @@ GameTexture::~GameTexture()
 	delete m_pImpl;
 }
 
-bool GameTextureManager::LoadFromPath(std::string strPathName)
+bool GameTextureManager::LoadTextureFromPath(std::string strPathName)
 {
 	using namespace std::filesystem;
 
@@ -87,7 +87,7 @@ bool GameTextureManager::LoadFromPath(std::string strPathName)
 		pGameTexture->m_pImpl->m_nWidth = pSurface->w;
 		pGameTexture->m_pImpl->m_nHeight = pSurface->h;
 		pGameTexture->m_pImpl->m_pTexture = pTexture;
-
+		          
 		std::string strFileName = GameUtils::WString2String(iter.path().filename());
 
 		Register(strFileName, pGameTexture);
@@ -96,7 +96,7 @@ bool GameTextureManager::LoadFromPath(std::string strPathName)
 	return true;
 }
 
-bool GameTextureManager::LoadFromPack(std::string strPackName)
+bool GameTextureManager::LoadTextureFromPack(std::string strPackName)
 {
 	using namespace std::filesystem;
 }
