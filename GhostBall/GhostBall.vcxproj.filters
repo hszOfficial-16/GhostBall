@@ -10,37 +10,40 @@
     <Filter Include="GameScene">
       <UniqueIdentifier>{760c9e82-f99a-4cea-bb57-c98408f589df}</UniqueIdentifier>
     </Filter>
-    <Filter Include="GameFramework\Resource">
+    <Filter Include="GameFramework\Source">
       <UniqueIdentifier>{0b19ed2b-bd1e-46f6-bd27-0b4bfb1fb662}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameMain.cpp">
-      <Filter>GameFramework\Resource</Filter>
+      <Filter>GameFramework\Source</Filter>
     </ClCompile>
     <ClCompile Include="GameGraphic.cpp">
-      <Filter>GameFramework\Resource</Filter>
+      <Filter>GameFramework\Source</Filter>
     </ClCompile>
     <ClCompile Include="GameListener.cpp">
-      <Filter>GameFramework\Resource</Filter>
+      <Filter>GameFramework\Source</Filter>
     </ClCompile>
     <ClCompile Include="GameMedia.cpp">
-      <Filter>GameFramework\Resource</Filter>
+      <Filter>GameFramework\Source</Filter>
     </ClCompile>
     <ClCompile Include="GameObjectPool.cpp">
-      <Filter>GameFramework\Resource</Filter>
+      <Filter>GameFramework\Source</Filter>
     </ClCompile>
     <ClCompile Include="GameScene.cpp">
-      <Filter>GameFramework\Resource</Filter>
+      <Filter>GameFramework\Source</Filter>
     </ClCompile>
     <ClCompile Include="GameResourceManager.cpp">
-      <Filter>GameFramework\Resource</Filter>
+      <Filter>GameFramework\Source</Filter>
     </ClCompile>
     <ClCompile Include="GameSprite.cpp">
-      <Filter>GameFramework\Resource</Filter>
+      <Filter>GameFramework\Source</Filter>
     </ClCompile>
     <ClCompile Include="GameUI.cpp">
-      <Filter>GameFramework\Resource</Filter>
+      <Filter>GameFramework\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="GameUtils.cpp">
+      <Filter>GameFramework\Source</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -66,6 +69,9 @@
       <Filter>GameFramework\Header</Filter>
     </ClInclude>
     <ClInclude Include="GameScene.h">
+      <Filter>GameFramework\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="GameUtils.h">
       <Filter>GameFramework\Header</Filter>
     </ClInclude>
   </ItemGroup>

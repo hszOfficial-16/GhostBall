@@ -1,24 +1,25 @@
 #include "GameResourceManager.h"
 
+#include <filesystem>
 #include <unordered_map>
 
 template<typename ResourceType>
 class GameResourceManager<ResourceType>::Impl
 {
 public:
-	std::unordered_map<std::wstring, ResourceType*> m_mapResources;
+	std::unordered_map<std::string, ResourceType*> m_mapResource;
 };
 
 template<typename ResourceType>
-void GameResourceManager<ResourceType>::Register(std::wstring strFileName, ResourceType* pResource)
+void GameResourceManager<ResourceType>::Register(std::string strFileName, ResourceType* pResource)
 {
-	m_pImpl->m_mapResources[strFileName] = pResource;
+	m_pImpl->m_mapResource[strFileName] = pResource;
 }
 
 template<typename ResourceType>
-ResourceType* GameResourceManager<ResourceType>::Get(std::wstring strFileName)
+ResourceType* GameResourceManager<ResourceType>::Get(std::string strFileName)
 {
-	return m_pImpl->m_mapResources[strFileName];
+	return m_pImpl->m_mapResource[strFileName];
 }
 
 template<typename ResourceType>

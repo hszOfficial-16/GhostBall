@@ -6,25 +6,21 @@
 template<typename ResourceType>
 class GameResourceManager
 {
-protected:
-	void			Register(std::wstring strFile, ResourceType* pResource);
-	ResourceType*	Get(std::wstring strFile);
+public:
+	virtual ResourceType*	Get(std::string strFile);
+	virtual void			Register(std::string strFileName, ResourceType* pResource);
 
 private:
-	class			Impl;
-	Impl			m_pImpl;
+	class					Impl;
+	Impl*					m_pImpl;
 
 public:
-	virtual ~GameResourceManager() = default;
+	virtual ~GameResourceManager();
 	GameResourceManager(const GameResourceManager&) = delete;
 	GameResourceManager& operator=(const GameResourceManager&) = delete;
-	static GameResourceManager& GetInstance()
-	{
-		static GameResourceManager instance;
-		return instance;
-	}
-private:
-	GameResourceManager() = default;
+
+protected:
+	GameResourceManager();
 };
 
 #endif // !_GAME_SOURCE_POOL_H_

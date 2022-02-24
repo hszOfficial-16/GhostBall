@@ -28,6 +28,7 @@
     <ClCompile Include="GameResourceManager.cpp" />
     <ClCompile Include="GameSprite.cpp" />
     <ClCompile Include="GameUI.cpp" />
+    <ClCompile Include="GameUtils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameGraphic.h" />
@@ -38,6 +39,7 @@
     <ClInclude Include="GameResourceManager.h" />
     <ClInclude Include="GameSprite.h" />
     <ClInclude Include="GameUI.h" />
+    <ClInclude Include="GameUtils.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
