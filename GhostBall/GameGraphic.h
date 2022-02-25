@@ -2,15 +2,30 @@
 #define _GAME_GRAPHIC_H_
 
 #include "GameResourceManager.h"
+#include "GameObjectPool.h"
+
+#include <initializer_list>
+
+struct GameSize
+{
+	int nWidth;
+	int nHeight;
+};
 
 class GameWindow
 {
 public:
-	
+	GameSize	GetWindowSize();
+	GameSize	GetWindowMaxSize();
+	GameSize	GetWindowMinSize();
+
+	void		SetWindowSize(const GameSize& windowSize);
+	void		SetWindowMaxSize(const GameSize& windowMaxSize);
+	void		SetWindowMinSize(const GameSize& windowMinSize);
 
 private:
-	class Impl;
-	Impl* m_pImpl;
+	class	Impl;
+	Impl*	m_pImpl;
 
 public:
 	~GameWindow();
@@ -29,13 +44,11 @@ private:
 
 class GameTexture
 {
-public:
-
 private:
 	class Impl;
 	Impl* m_pImpl;
 
-public:
+private:
 	GameTexture();
 	~GameTexture();
 
@@ -45,8 +58,8 @@ public:
 class GameTextureManager : public GameResourceManager<GameTexture>
 {
 public:
-	bool	LoadTextureFromPath(std::string strPathName);
-	bool	LoadTextureFromPack(std::string strPackName);
+	bool LoadFromPath(std::string strPathName);
+	bool LoadFromPack(std::string strPackName);
 };
 
 class GameFont
@@ -58,7 +71,7 @@ private:
 	class Impl;
 	Impl* m_pImpl;
 
-public:
+private:
 	GameFont();
 	~GameFont();
 
@@ -68,25 +81,24 @@ public:
 class GameFontManager : public GameResourceManager<GameFont>
 {
 public:
-
+	bool LoadFromPath(std::string strPathName);
+	bool LoadFromPack(std::string strPackName);
 };
 
-class GameImage
+struct GameImage
 {
-public:
-
-private:
-
+	GameTexture*	pTexture;
+	unsigned int	nDuration;
 };
 
 class GameImageManager
 {
 public:
+	GameImage*	CreateStaticImage(GameTexture* pGameTexture);
+	GameImage*	CreateDynamicImage(std::initializer_list<GameImage>& ilFrames);
 
-
-private:
-
-
+	void		DestroyImage(GameImage* pGameImage);
+	
 public:
 	~GameImageManager() = default;
 	GameImageManager(const GameImageManager&) = delete;

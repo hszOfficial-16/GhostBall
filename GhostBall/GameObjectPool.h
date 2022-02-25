@@ -5,16 +5,16 @@ template<typename ObjectType, size_t nBlockNum = 16>
 class GameObjectPool
 {
 public:
-	ObjectType*		Malloc();
-	void			Free(ObjectType* pObject);
+	virtual ObjectType*	Malloc();
+	virtual void		Free(ObjectType* pObject);
 
 private:
-	class			Impl;
-	Impl*			m_pImpl;
+	class				Impl;
+	Impl*				m_pImpl;
 
 public:
 	GameObjectPool();
-	~GameObjectPool();
+	virtual ~GameObjectPool();
 };
 
 #endif // !_GAME_OBJECT_POOL_H_
