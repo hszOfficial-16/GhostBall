@@ -2,7 +2,6 @@
 #define _GAME_GRAPHIC_H_
 
 #include "GameResourceManager.h"
-#include "GameObjectPool.h"
 
 #include <initializer_list>
 
@@ -24,8 +23,8 @@ public:
 	void		SetWindowMinSize(const GameSize& windowMinSize);
 
 private:
-	class	Impl;
-	Impl*	m_pImpl;
+	class		Impl;
+	Impl*		m_pImpl;
 
 public:
 	~GameWindow();
@@ -44,9 +43,12 @@ private:
 
 class GameTexture
 {
+public:
+	const GameSize&		GetSize();
+
 private:
-	class Impl;
-	Impl* m_pImpl;
+	class				Impl;
+	Impl*				m_pImpl;
 
 private:
 	GameTexture();
@@ -60,6 +62,18 @@ class GameTextureManager : public GameResourceManager<GameTexture>
 public:
 	bool LoadFromPath(std::string strPathName);
 	bool LoadFromPack(std::string strPackName);
+
+public:
+	virtual ~GameTextureManager();
+	GameTextureManager(const GameTextureManager&) = delete;
+	GameTextureManager& operator=(const GameTextureManager&) = delete;
+	static GameTextureManager& GetInstance()
+	{
+		static GameTextureManager instance;
+		return instance;
+	}
+private:
+	GameTextureManager();
 };
 
 class GameFont
@@ -83,6 +97,18 @@ class GameFontManager : public GameResourceManager<GameFont>
 public:
 	bool LoadFromPath(std::string strPathName);
 	bool LoadFromPack(std::string strPackName);
+
+public:
+	virtual ~GameFontManager();
+	GameFontManager(const GameFontManager&) = delete;
+	GameFontManager& operator=(const GameFontManager&) = delete;
+	static GameFontManager& GetInstance()
+	{
+		static GameFontManager instance;
+		return instance;
+	}
+private:
+	GameFontManager();
 };
 
 struct GameImage

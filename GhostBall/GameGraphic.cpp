@@ -19,8 +19,6 @@ public:
 	Impl()
 	{
 		SDL_Init(SDL_INIT_EVERYTHING);
-		IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG | IMG_INIT_TIF | IMG_INIT_WEBP);
-		if (!TTF_WasInit()) TTF_Init();
 
 		m_pWindow = SDL_CreateWindow("幽灵球", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 1280, 720, SDL_WINDOW_SHOWN);
 		m_pRenderer = SDL_CreateRenderer(m_pWindow, -1, SDL_RENDERER_ACCELERATED);
@@ -33,8 +31,6 @@ public:
 		SDL_DestroyRenderer(m_pRenderer);
 		SDL_DestroyWindow(m_pWindow);
 
-		TTF_Quit();
-		IMG_Quit();
 		SDL_Quit();
 	}
 };
@@ -90,18 +86,29 @@ GameWindow::~GameWindow()
 class GameTexture::Impl
 {
 public:
-	int				m_nWidth;
-	int				m_nHeight;
+	GameSize		m_size;
 	SDL_Texture*	m_pTexture;
 
 public:
 	Impl()
 	{
-		m_nWidth = 0;
-		m_nHeight = 0;
+		m_size.nWidth = 0;
+		m_size.nHeight = 0;
 		m_pTexture = nullptr;
 	}
+	~Impl()
+	{
+		if (m_pTexture)
+		{
+			SDL_DestroyTexture(m_pTexture);
+		}
+	}
 };
+
+const GameSize& GameTexture::GetSize()
+{
+	return m_pImpl->m_size;
+}
 
 GameTexture::GameTexture()
 {
@@ -132,12 +139,12 @@ bool GameTextureManager::LoadFromPath(std::string strPathName)
 	directory_iterator listFile(entryDirectory);
 	for (auto& iter : listFile)
 	{
-		SDL_Surface* pSurface = IMG_Load(strPathName.c_str());
+		SDL_Surface* pSurface = IMG_Load(GameUtils::WString2String(iter.path()).c_str());
 		SDL_Texture* pTexture = SDL_CreateTextureFromSurface(GameWindow::GetInstance().m_pImpl->m_pRenderer, pSurface);
 
 		GameTexture* pGameTexture = new GameTexture();
-		pGameTexture->m_pImpl->m_nWidth = pSurface->w;
-		pGameTexture->m_pImpl->m_nHeight = pSurface->h;
+		pGameTexture->m_pImpl->m_size.nWidth = pSurface->w;
+		pGameTexture->m_pImpl->m_size.nHeight = pSurface->h;
 		pGameTexture->m_pImpl->m_pTexture = pTexture;
 		          
 		std::string strFileName = GameUtils::WString2String(iter.path().filename());
@@ -153,16 +160,32 @@ bool GameTextureManager::LoadFromPack(std::string strPackName)
 	using namespace std::filesystem;
 }
 
+GameTextureManager::GameTextureManager()
+{
+	IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG | IMG_INIT_TIF | IMG_INIT_WEBP);
+}
+
+GameTextureManager::~GameTextureManager()
+{
+	IMG_Quit();
+}
+
 // GameFont 实现
 
 class GameFont::Impl
 {
 public:
-
+	TTF_Font* m_pFont;
 
 public:
-
-
+	Impl()
+	{
+		m_pFont = nullptr;
+	}
+	~Impl()
+	{
+		TTF_CloseFont(m_pFont);
+	}
 };
 
 GameFont::GameFont()
@@ -177,12 +200,49 @@ GameFont::~GameFont()
 
 bool GameFontManager::LoadFromPath(std::string strPathName)
 {
+	using namespace std::filesystem;
 
+	path pathLoading(strPathName);
+	if (!exists(pathLoading))
+	{
+		return false;
+	}
+
+	directory_entry entryDirectory(pathLoading);
+	if (entryDirectory.status().type() != file_type::directory)
+	{
+		return false;
+	}
+
+	directory_iterator listFile(entryDirectory);
+	for (auto& iter : listFile)
+	{
+		SDL_Surface* pSurface = IMG_Load(strPathName.c_str());
+
+		GameFont* pGameFont = new GameFont();
+		pGameFont->m_pImpl->m_pFont = TTF_OpenFont(GameUtils::WString2String(iter.path()).c_str(), 64);
+
+		std::string strFileName = GameUtils::WString2String(iter.path().filename());
+
+		Register(strFileName, pGameFont);
+	}
+
+	return true;
 }
 
 bool GameFontManager::LoadFromPack(std::string strPackName)
 {
+	using namespace std::filesystem;
+}
 
+GameFontManager::GameFontManager()
+{
+	TTF_Init();
+}
+
+GameFontManager::~GameFontManager()
+{
+	TTF_Quit();
 }
 
 // GameImage 实现

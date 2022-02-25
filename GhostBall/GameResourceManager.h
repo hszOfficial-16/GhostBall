@@ -18,7 +18,6 @@ public:
 	virtual ~GameResourceManager();
 	GameResourceManager(const GameResourceManager&) = delete;
 	GameResourceManager& operator=(const GameResourceManager&) = delete;
-
 protected:
 	GameResourceManager();
 };
