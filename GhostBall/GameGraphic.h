@@ -57,14 +57,18 @@ private:
 	friend class GameTextureManager;
 };
 
-class GameTextureManager : public GameResourceManager<GameTexture>
+class GameTextureManager
 {
 public:
-	bool LoadFromPath(std::string strPathName);
-	bool LoadFromPack(std::string strPackName);
+	bool	LoadFromFilter(std::string strFliterPath);
+	bool	LoadFromPack(std::string strPackName);
+
+private:
+	class	Impl;
+	Impl*	m_pImpl;
 
 public:
-	virtual ~GameTextureManager();
+	~GameTextureManager();
 	GameTextureManager(const GameTextureManager&) = delete;
 	GameTextureManager& operator=(const GameTextureManager&) = delete;
 	static GameTextureManager& GetInstance()
@@ -92,11 +96,15 @@ private:
 	friend class GameFontManager;
 };
 
-class GameFontManager : public GameResourceManager<GameFont>
+class GameFontManager
 {
 public:
-	bool LoadFromPath(std::string strPathName);
-	bool LoadFromPack(std::string strPackName);
+	bool	LoadFromFilter(std::string strFliterPath);
+	bool	LoadFromPack(std::string strPackName);
+
+private:
+	class	Impl;
+	Impl*	m_pImpl;
 
 public:
 	virtual ~GameFontManager();

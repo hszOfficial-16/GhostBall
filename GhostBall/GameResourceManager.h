@@ -2,24 +2,24 @@
 #define _GAME_SOURCE_POOL_H_
 
 #include <string>
+#include <functional>
 
-template<typename ResourceType>
 class GameResourceManager
 {
 public:
-	virtual ResourceType*	Get(std::string strFile);
-	virtual void			Register(std::string strFileName, ResourceType* pResource);
+	bool	LoadFromFilter(std::string strFliterPath);
+	bool	LoadFromPack(std::string strPackName);
+
+	void*	Get(std::string strFileName);
+	void	SetCreateFunc(std::function<void* (std::string)> funcCreateResource);
 
 private:
-	class					Impl;
-	Impl*					m_pImpl;
+	class	Impl;
+	Impl*	m_pImpl;
 
 public:
-	virtual ~GameResourceManager();
-	GameResourceManager(const GameResourceManager&) = delete;
-	GameResourceManager& operator=(const GameResourceManager&) = delete;
-protected:
 	GameResourceManager();
+	~GameResourceManager();
 };
 
 #endif // !_GAME_SOURCE_POOL_H_
