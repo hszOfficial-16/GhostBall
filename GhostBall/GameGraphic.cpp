@@ -4,6 +4,8 @@
 #include <SDL_image.h>
 #include <SDL_ttf.h>
 
+#include "GameResourceManager.h"
+
 // GameWindow й╣ож
 
 class GameWindow::Impl
@@ -241,7 +243,7 @@ GameImage* GameImageManager::CreateStaticImage(GameTexture* pGameTexture)
 GameImage* GameImageManager::CreateDynamicImage(std::initializer_list<GameImage>& ilFrames)
 {
 	GameImage* arrImages = new GameImage[ilFrames.size()];
-	for (size_t index = 0; index < ilFrames.size(); index++)
+	for (uint16_t index = 0; index < ilFrames.size(); index++)
 	{
 		arrImages[index] = *(ilFrames.begin() + index);
 	}

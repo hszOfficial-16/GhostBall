@@ -23,7 +23,7 @@
     <ClCompile Include="GameListener.cpp" />
     <ClCompile Include="GameMain.cpp" />
     <ClCompile Include="GameMedia.cpp" />
-    <ClCompile Include="GameObjectPool.cpp" />
+    <ClCompile Include="GameObjectManager.cpp" />
     <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="GameResourceManager.cpp" />
     <ClCompile Include="GameSprite.cpp" />
@@ -34,7 +34,7 @@
     <ClInclude Include="GameGraphic.h" />
     <ClInclude Include="GameListener.h" />
     <ClInclude Include="GameMedia.h" />
-    <ClInclude Include="GameObjectPool.h" />
+    <ClInclude Include="GameObjectManager.h" />
     <ClInclude Include="GameScene.h" />
     <ClInclude Include="GameResourceManager.h" />
     <ClInclude Include="GameSprite.h" />
@@ -159,7 +159,7 @@
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <AdditionalIncludeDirectories>.\lib\Box2D\include;.\lib\SDL2\include;.\lib\SDL2_image\include;.\lib\SDL2_ttf\include;.\lib\SDL2_mixer\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -167,7 +167,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>.\lib\Box2D\x64;.\lib\SDL2\x64;.\lib\SDL2_image\x64;.\lib\SDL2_ttf\x64;.\lib\SDL2_mixer\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>Setupapi.lib;winmm.lib;imm32.lib;version.lib;Shlwapi.lib;SDL2.lib;SDL2_image.lib;jpeg.lib;libpng16.lib;libwebpmux.lib;lzma.lib;tiff.lib;turbojpeg.lib;webp.lib;webpdecoder.lib;webpdemux.lib;SDL2_ttf.lib;freetype.lib;brotlicommon-static.lib;brotlidec-static.lib;brotlienc-static.lib;bz2.lib;zlib.lib;SDL2_mixer.lib;FLAC.lib;FLAC++.lib;modplug.lib;mpg123.lib;ogg.lib;opus.lib;opusfile.lib;out123.lib;syn123.lib;vorbis.lib;vorbisenc.lib;vorbisfile.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Setupapi.lib;winmm.lib;imm32.lib;version.lib;Shlwapi.lib;SDL2.lib;SDL2_image.lib;jpeg.lib;libpng16.lib;libwebpmux.lib;lzma.lib;tiff.lib;turbojpeg.lib;webp.lib;webpdecoder.lib;webpdemux.lib;SDL2_ttf.lib;freetype.lib;brotlicommon-static.lib;brotlidec-static.lib;brotlienc-static.lib;bz2.lib;zlib.lib;SDL2_mixer.lib;FLAC.lib;FLAC++.lib;modplug.lib;mpg123.lib;ogg.lib;opus.lib;opusfile.lib;out123.lib;syn123.lib;vorbis.lib;vorbisenc.lib;vorbisfile.lib;box2d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -1,14 +1,28 @@
 #ifndef _GAME_GRAPHIC_H_
 #define _GAME_GRAPHIC_H_
 
-#include "GameResourceManager.h"
-
+#include <string>
 #include <initializer_list>
+
+// 游戏图像相关基础结构
+
+struct GamePosition
+{
+	float x;
+	float y;
+};
 
 struct GameSize
 {
 	int nWidth;
 	int nHeight;
+};
+
+enum class GameFlip
+{
+	NONE = 0,
+	HORIZONTAL,
+	VERTICAL
 };
 
 class GameWindow

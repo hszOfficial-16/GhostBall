@@ -13,6 +13,15 @@
     <Filter Include="GameFramework\Source">
       <UniqueIdentifier>{0b19ed2b-bd1e-46f6-bd27-0b4bfb1fb662}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameFramework\Header\GameCommon">
+      <UniqueIdentifier>{126dd0b7-bfaf-45ad-ac41-3069f1a41065}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameFramework\Header\GameResource">
+      <UniqueIdentifier>{6d09ce44-abe9-4000-9cd3-0893257030d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameFramework\Header\GameObject">
+      <UniqueIdentifier>{c665ca7f-361c-48fb-a9e5-84307b18de61}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameMain.cpp">
@@ -25,9 +34,6 @@
       <Filter>GameFramework\Source</Filter>
     </ClCompile>
     <ClCompile Include="GameMedia.cpp">
-      <Filter>GameFramework\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="GameObjectPool.cpp">
       <Filter>GameFramework\Source</Filter>
     </ClCompile>
     <ClCompile Include="GameScene.cpp">
@@ -45,34 +51,37 @@
     <ClCompile Include="GameUtils.cpp">
       <Filter>GameFramework\Source</Filter>
     </ClCompile>
+    <ClCompile Include="GameObjectManager.cpp">
+      <Filter>GameFramework\Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GameGraphic.h">
-      <Filter>GameFramework\Header</Filter>
-    </ClInclude>
-    <ClInclude Include="GameObjectPool.h">
+    <ClInclude Include="GameUtils.h">
       <Filter>GameFramework\Header</Filter>
     </ClInclude>
     <ClInclude Include="GameResourceManager.h">
-      <Filter>GameFramework\Header</Filter>
+      <Filter>GameFramework\Header\GameCommon</Filter>
     </ClInclude>
-    <ClInclude Include="GameListener.h">
-      <Filter>GameFramework\Header</Filter>
+    <ClInclude Include="GameObjectManager.h">
+      <Filter>GameFramework\Header\GameCommon</Filter>
+    </ClInclude>
+    <ClInclude Include="GameGraphic.h">
+      <Filter>GameFramework\Header\GameResource</Filter>
     </ClInclude>
     <ClInclude Include="GameMedia.h">
-      <Filter>GameFramework\Header</Filter>
+      <Filter>GameFramework\Header\GameResource</Filter>
     </ClInclude>
-    <ClInclude Include="GameUI.h">
-      <Filter>GameFramework\Header</Filter>
-    </ClInclude>
-    <ClInclude Include="GameSprite.h">
-      <Filter>GameFramework\Header</Filter>
+    <ClInclude Include="GameListener.h">
+      <Filter>GameFramework\Header\GameObject</Filter>
     </ClInclude>
     <ClInclude Include="GameScene.h">
-      <Filter>GameFramework\Header</Filter>
+      <Filter>GameFramework\Header\GameObject</Filter>
     </ClInclude>
-    <ClInclude Include="GameUtils.h">
-      <Filter>GameFramework\Header</Filter>
+    <ClInclude Include="GameSprite.h">
+      <Filter>GameFramework\Header\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="GameUI.h">
+      <Filter>GameFramework\Header\GameObject</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
