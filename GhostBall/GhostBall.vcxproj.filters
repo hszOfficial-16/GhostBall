@@ -74,14 +74,14 @@
     <ClInclude Include="GameListener.h">
       <Filter>GameFramework\Header\GameObject</Filter>
     </ClInclude>
-    <ClInclude Include="GameScene.h">
-      <Filter>GameFramework\Header\GameObject</Filter>
-    </ClInclude>
     <ClInclude Include="GameSprite.h">
       <Filter>GameFramework\Header\GameObject</Filter>
     </ClInclude>
     <ClInclude Include="GameUI.h">
       <Filter>GameFramework\Header\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="GameScene.h">
+      <Filter>GameFramework\Header</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
