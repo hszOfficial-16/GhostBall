@@ -15,9 +15,6 @@ public:
 	size_t m_nObjectSize;
 	size_t m_nChunkSize;
 
-	std::function<void(void*)> m_funcConstructor;
-	std::function<void(void*)> m_funcDeconstructor;
-
 	std::vector<void*> m_vFreeBlock;
 
 public:
@@ -25,9 +22,6 @@ public:
 	{
 		m_nObjectSize = 0;
 		m_nChunkSize = 16;
-
-		m_funcConstructor = nullptr;
-		m_funcDeconstructor = nullptr;
 
 		m_pChunkHead = nullptr;
 	}
@@ -68,25 +62,13 @@ void* GameObjectManager::Create()
 
 	void* pObject = (void*)(*m_pImpl->m_vFreeBlock.end());
 	m_pImpl->m_vFreeBlock.pop_back();
-	m_pImpl->m_funcConstructor(pObject);
 
 	return pObject;
 }
 
 void GameObjectManager::Destroy(void* pObject)
 {
-	m_pImpl->m_funcDeconstructor(pObject);
 	m_pImpl->m_vFreeBlock.push_back(pObject);
-}
-
-void GameObjectManager::SetConstructFunc(std::function<void(void*)> funcConstructor)
-{
-	m_pImpl->m_funcConstructor = funcConstructor;
-}
-
-void GameObjectManager::SetDeconstructFunc(std::function<void(void*)> funcDeconstructor)
-{
-	m_pImpl->m_funcDeconstructor = funcDeconstructor;
 }
 
 GameObjectManager::GameObjectManager(size_t nObjectSize, size_t nChunkSize)

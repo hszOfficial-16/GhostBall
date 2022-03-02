@@ -4,8 +4,6 @@
 #include <string>
 #include <initializer_list>
 
-// 游戏图像相关基础结构
-
 struct GamePosition
 {
 	float x;
@@ -53,7 +51,7 @@ private:
 	GameWindow();
 
 	friend class GameTextureManager;
-};
+}; 
 
 class GameTexture
 {
@@ -74,8 +72,9 @@ private:
 class GameTextureManager
 {
 public:
-	bool	LoadFromFilter(std::string strFliterPath);
-	bool	LoadFromPack(std::string strPackName);
+	bool LoadFromFilter(std::string strFliterPath);
+	bool LoadFromPack(std::string strPackName);
+	GameTexture* Get(std::string strFileName);
 
 private:
 	class	Impl;

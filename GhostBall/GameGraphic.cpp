@@ -19,7 +19,7 @@ public:
 	{
 		SDL_Init(SDL_INIT_EVERYTHING);
 
-		m_pWindow = SDL_CreateWindow("ÓÄÁéÇò", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 1280, 720, SDL_WINDOW_SHOWN);
+		m_pWindow = SDL_CreateWindow("GhostBall", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 1280, 720, SDL_WINDOW_SHOWN);
 		m_pRenderer = SDL_CreateRenderer(m_pWindow, -1, SDL_RENDERER_ACCELERATED);
 
 		SDL_SetRenderDrawBlendMode(m_pRenderer, SDL_BLENDMODE_BLEND);
@@ -127,7 +127,7 @@ public:
 public:
 	Impl()
 	{
-		m_textureManager.SetConstructFunc([&](std::string strFileName)->void* {
+		m_textureManager.SetConstructFunc([](std::string strFileName)->void* {
 			SDL_Surface* pSurface = IMG_Load(strFileName.c_str());
 			SDL_Texture* pTexture = SDL_CreateTextureFromSurface(GameWindow::GetInstance().m_pImpl->m_pRenderer, pSurface);
 			GameTexture* pGameTexture = new GameTexture();
@@ -147,6 +147,11 @@ bool GameTextureManager::LoadFromFilter(std::string strFilterPath)
 bool GameTextureManager::LoadFromPack(std::string strPackName)
 {
 	return m_pImpl->m_textureManager.LoadFromPack(strPackName);
+}
+
+GameTexture* GameTextureManager::Get(std::string strFileName)
+{
+	return (GameTexture*)m_pImpl->m_textureManager.Get(strFileName);
 }
 
 GameTextureManager::GameTextureManager()
@@ -200,7 +205,7 @@ public:
 public:
 	Impl()
 	{
-		m_fontManager.SetConstructFunc([&](std::string strFileName)->void* {
+		m_fontManager.SetConstructFunc([](std::string strFileName)->void* {
 			TTF_Font* pFont = TTF_OpenFont(strFileName.c_str(), 64);
 			GameFont* pGameFont = new GameFont();
 			pGameFont->m_pImpl->m_pFont = pFont;
