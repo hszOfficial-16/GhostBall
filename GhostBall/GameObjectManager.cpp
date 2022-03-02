@@ -15,8 +15,8 @@ public:
 	size_t m_nObjectSize;
 	size_t m_nChunkSize;
 
-	ObjectProcessFunc m_funcConstructor;
-	ObjectProcessFunc m_funcDeconstructor;
+	std::function<void(void*)> m_funcConstructor;
+	std::function<void(void*)> m_funcDeconstructor;
 
 	std::vector<void*> m_vFreeBlock;
 
@@ -79,12 +79,12 @@ void GameObjectManager::Destroy(void* pObject)
 	m_pImpl->m_vFreeBlock.push_back(pObject);
 }
 
-void GameObjectManager::SetConstructFunc(ObjectProcessFunc funcConstructor)
+void GameObjectManager::SetConstructFunc(std::function<void(void*)> funcConstructor)
 {
 	m_pImpl->m_funcConstructor = funcConstructor;
 }
 
-void GameObjectManager::SetDeconstructFunc(ObjectProcessFunc funcDeconstructor)
+void GameObjectManager::SetDeconstructFunc(std::function<void(void*)> funcDeconstructor)
 {
 	m_pImpl->m_funcDeconstructor = funcDeconstructor;
 }

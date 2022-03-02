@@ -127,7 +127,7 @@ public:
 public:
 	Impl()
 	{
-		m_textureManager.SetCreateFunc([&](std::string strFileName)->void* {
+		m_textureManager.SetConstructFunc([&](std::string strFileName)->void* {
 			SDL_Surface* pSurface = IMG_Load(strFileName.c_str());
 			SDL_Texture* pTexture = SDL_CreateTextureFromSurface(GameWindow::GetInstance().m_pImpl->m_pRenderer, pSurface);
 			GameTexture* pGameTexture = new GameTexture();
@@ -200,7 +200,7 @@ public:
 public:
 	Impl()
 	{
-		m_fontManager.SetCreateFunc([&](std::string strFileName)->void* {
+		m_fontManager.SetConstructFunc([&](std::string strFileName)->void* {
 			TTF_Font* pFont = TTF_OpenFont(strFileName.c_str(), 64);
 			GameFont* pGameFont = new GameFont();
 			pGameFont->m_pImpl->m_pFont = pFont;
@@ -243,7 +243,7 @@ GameImage* GameImageManager::CreateStaticImage(GameTexture* pGameTexture)
 GameImage* GameImageManager::CreateDynamicImage(std::initializer_list<GameImage>& ilFrames)
 {
 	GameImage* arrImages = new GameImage[ilFrames.size()];
-	for (uint16_t index = 0; index < ilFrames.size(); index++)
+	for (int index = 0; index < ilFrames.size(); index++)
 	{
 		arrImages[index] = *(ilFrames.begin() + index);
 	}

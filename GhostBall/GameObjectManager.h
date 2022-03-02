@@ -1,27 +1,37 @@
 #ifndef _GAME_OBJECT_MANAGER_H_
 #define _GAME_OBJECT_MANAGER_H_
 
+#include <functional>
+
+/* 为对象分配内存并自动管理
+并为对象调用用户指定的构造/析构函数
+*/
 class GameObjectManager
 {
 public:
-	typedef void(*ObjectProcessFunc)(void*);
-
 	/* 为对象分配内存并调用构造函数
+	* @param 无
 	* @return 指向该对象的指针
 	*/
 	void* Create();
 
 	/* 调用析构函数并释放对象的内存
+	* @param 由该内存管理对象管理的指针
+	* @return 无
 	*/
 	void Destroy(void* pObject);
 
 	/* 设置对象管理者的构造函数
+	* @param 构造函数
+	* @return 无
 	*/
-	void SetConstructFunc(ObjectProcessFunc funcConstructor);
+	void SetConstructFunc(std::function<void(void*)> funcConstructor);
 
 	/* 设置对象管理者的析构函数
+	* @param 析构函数
+	* @return 无
 	*/
-	void SetDeconstructFunc(ObjectProcessFunc funcDeconstructor);
+	void SetDeconstructFunc(std::function<void(void*)> funcDeconstructor);
 
 private:
 	class Impl;

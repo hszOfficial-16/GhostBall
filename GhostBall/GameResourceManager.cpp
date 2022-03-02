@@ -55,9 +55,9 @@ bool GameResourceManager::LoadFromPack(std::string strPackName)
 	using namespace std::filesystem;
 }
 
-void GameResourceManager::SetCreateFunc(std::function<void* (std::string)> funcCreateResource)
+void GameResourceManager::SetConstructFunc(std::function<void* (std::string)> funcConstructResource)
 {
-	m_pImpl->m_funcCreateResource = funcCreateResource;
+	m_pImpl->m_funcCreateResource = funcConstructResource;
 }
 
 void* GameResourceManager::Get(std::string strFileName)
