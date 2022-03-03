@@ -4,7 +4,7 @@
 #include <SDL_image.h>
 #include <SDL_ttf.h>
 
-#include <vector>
+#include <unordered_set>
 
 #include "GameResourceManager.h"
 
@@ -82,160 +82,12 @@ GameWindow::~GameWindow()
 	delete m_pImpl;
 }
 
-// GameTexture 实现
-
-class GameTexture::Impl
-{
-public:
-	GameSize		m_size;
-	SDL_Texture*	m_pTexture;
-
-public:
-	Impl()
-	{
-		m_size.nWidth = 0;
-		m_size.nHeight = 0;
-		m_pTexture = nullptr;
-	}
-	~Impl()
-	{
-		if (m_pTexture)
-		{
-			SDL_DestroyTexture(m_pTexture);
-		}
-	}
-};
-
-GameTexture::GameTexture()
-{
-	m_pImpl = new Impl();
-}
-
-GameTexture::~GameTexture()
-{
-	delete m_pImpl;
-}
-
-class GameTextureManager::Impl
-{
-public:
-	// 图片纹理管理者
-	GameResourceManager m_textureManager;
-
-	// 文字纹理管理向量
-	std::vector<GameTexture*> m_vTextManager;
-
-	// 用于 Render 函数的辅助成员
-	SDL_Rect	m_rectSrc;
-	SDL_FRect	m_rectDst;
-	SDL_FPoint	m_pointAnchor;
-
-public:
-	Impl()
-	{
-		m_textureManager.SetConstructFunc([](std::string strFileName)->void* {
-			SDL_Surface* pSurface = IMG_Load(strFileName.c_str());
-			SDL_Texture* pTexture = SDL_CreateTextureFromSurface(GameWindow::GetInstance().m_pImpl->m_pRenderer, pSurface);
-			GameTexture* pGameTexture = new GameTexture();
-			pGameTexture->m_pImpl->m_size.nWidth = pSurface->w;
-			pGameTexture->m_pImpl->m_size.nHeight = pSurface->h;
-			pGameTexture->m_pImpl->m_pTexture = pTexture;
-			SDL_FreeSurface(pSurface);
-			return (void*)pGameTexture;
-			});
-
-		m_textureManager.SetDeconstructFunc([](void* pObject) {
-			GameTexture* pGameTexture = (GameTexture*)pObject;
-			SDL_DestroyTexture(pGameTexture->m_pImpl->m_pTexture);
-			});
-
-		m_rectSrc = { 0, 0, 0, 0 };
-		m_rectDst = { 0.0f, 0.0f, 0.0f, 0.0f };
-		m_pointAnchor = { 0.0f, 0.0f };
-	}
-
-	~Impl()
-	{
-		for (int i = m_vTextManager.size() - 1; i >= 0; i--)
-		{
-			SDL_DestroyTexture(m_vTextManager[i]->m_pImpl->m_pTexture);
-			delete m_vTextManager[i];
-		}
-	}
-};
-
-bool GameTextureManager::LoadFromFilter(std::string strFilterPath)
-{
-	return m_pImpl->m_textureManager.LoadFromFilter(strFilterPath);
-}
-
-bool GameTextureManager::LoadFromPack(std::string strPackName)
-{
-	return m_pImpl->m_textureManager.LoadFromPack(strPackName);
-}
-
-GameTexture* GameTextureManager::CreateTextSolid(std::string strTextContent, GameFont* pFont, const GameColor& colorFg)
-{
-
-}
-
-GameTexture* GameTextureManager::CreateTextBlended(std::string strTextContent, GameFont* pFont, const GameColor& colorFg)
-{
-
-}
-
-GameTexture* GameTextureManager::CreateTextShaded(std::string strTextContent, GameFont* pFont, const GameColor& colorFg, const GameColor& colorBg)
-{
-
-}
-
-GameTexture* GameTextureManager::Get(std::string strFileName)
-{
-	return (GameTexture*)m_pImpl->m_textureManager.Get(strFileName);
-}
-
-void GameTextureManager::Render(GameTexture* pTexture, const GameRect& rectDraw,
-	const double& fAngle, const GamePoint& pointAnchor, const GameFlip& emFlip)
-{
-	m_pImpl->m_rectSrc.w = pTexture->m_pImpl->m_size.nWidth;
-	m_pImpl->m_rectSrc.h = pTexture->m_pImpl->m_size.nHeight;
-
-	m_pImpl->m_rectDst = {
-		rectDraw.x, rectDraw.y,
-		rectDraw.w, rectDraw.h
-	};
-
-	m_pImpl->m_pointAnchor = {
-		pointAnchor.x, pointAnchor.y
-	};
-
-	SDL_RenderCopyExF(
-		GameWindow::GetInstance().m_pImpl->m_pRenderer,
-		pTexture->m_pImpl->m_pTexture,
-		&m_pImpl->m_rectSrc, &m_pImpl->m_rectDst,
-		fAngle, &m_pImpl->m_pointAnchor,
-		(SDL_RendererFlip)emFlip
-		);
-}
-
-GameTextureManager::GameTextureManager()
-{
-	IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG | IMG_INIT_TIF | IMG_INIT_WEBP);
-	m_pImpl = new Impl();
-}
-
-GameTextureManager::~GameTextureManager()
-{
-	IMG_Quit();
-	delete m_pImpl;
-}
-
 // GameFont 实现
 
 class GameFont::Impl
 {
 public:
-	TTF_Font*	m_pFont;
+	TTF_Font* m_pFont;
 
 public:
 	Impl()
@@ -307,6 +159,214 @@ GameFontManager::GameFontManager()
 GameFontManager::~GameFontManager()
 {
 	TTF_Quit();
+	delete m_pImpl;
+}
+
+// GameTexture 实现
+
+class GameTexture::Impl
+{
+public:
+	GameSize		m_size;
+	SDL_Texture*	m_pTexture;
+
+public:
+	Impl()
+	{
+		m_size.nWidth = 0;
+		m_size.nHeight = 0;
+		m_pTexture = nullptr;
+	}
+	~Impl()
+	{
+		if (m_pTexture)
+		{
+			SDL_DestroyTexture(m_pTexture);
+		}
+	}
+};
+
+GameTexture::GameTexture()
+{
+	m_pImpl = new Impl();
+}
+
+GameTexture::~GameTexture()
+{
+	delete m_pImpl;
+}
+
+class GameTextureManager::Impl
+{
+public:
+	// 图片纹理管理者
+	GameResourceManager m_textureManager;
+
+	// 文字纹理管理者
+	std::unordered_set<GameTexture*> m_setTextManager;
+
+	// 用于 Render 函数的辅助成员
+	SDL_Rect	m_rectSrc;
+	SDL_FRect	m_rectDst;
+	SDL_FPoint	m_pointAnchor;
+
+public:
+	Impl()
+	{
+		m_textureManager.SetConstructFunc([](std::string strFileName)->void* {
+			SDL_Surface* pSurface = IMG_Load(strFileName.c_str());
+			SDL_Texture* pTexture = SDL_CreateTextureFromSurface(GameWindow::GetInstance().m_pImpl->m_pRenderer, pSurface);
+			GameTexture* pGameTexture = new GameTexture();
+			pGameTexture->m_pImpl->m_size.nWidth = pSurface->w;
+			pGameTexture->m_pImpl->m_size.nHeight = pSurface->h;
+			pGameTexture->m_pImpl->m_pTexture = pTexture;
+			SDL_FreeSurface(pSurface);
+			return (void*)pGameTexture;
+			});
+
+		m_textureManager.SetDeconstructFunc([](void* pObject) {
+			GameTexture* pGameTexture = (GameTexture*)pObject;
+			SDL_DestroyTexture(pGameTexture->m_pImpl->m_pTexture);
+			});
+
+		m_rectSrc = { 0, 0, 0, 0 };
+		m_rectDst = { 0.0f, 0.0f, 0.0f, 0.0f };
+		m_pointAnchor = { 0.0f, 0.0f };
+	}
+
+	~Impl()
+	{
+		for (auto iter = m_setTextManager.begin(); iter != m_setTextManager.end(); iter++)
+		{
+			SDL_DestroyTexture((*iter)->m_pImpl->m_pTexture);
+			delete (*iter);
+		}
+	}
+};
+
+bool GameTextureManager::LoadFromFilter(std::string strFilterPath)
+{
+	return m_pImpl->m_textureManager.LoadFromFilter(strFilterPath);
+}
+
+bool GameTextureManager::LoadFromPack(std::string strPackName)
+{
+	return m_pImpl->m_textureManager.LoadFromPack(strPackName);
+}
+
+GameTexture* GameTextureManager::CreateTextSolid(std::string strTextContent, GameFont* pFont, const GameColor& colorFg)
+{	
+	GameTexture* pGameTexture = new GameTexture();
+
+	if (m_pImpl->m_setTextManager.find(pGameTexture) != m_pImpl->m_setTextManager.end())
+	{
+		pGameTexture = *m_pImpl->m_setTextManager.find(pGameTexture);
+	}
+	else
+	{
+		SDL_Surface* pSurface = TTF_RenderText_Solid(pFont->m_pImpl->m_pFont, strTextContent.c_str(),
+			{ colorFg.r, colorFg.g, colorFg.b, colorFg.a });
+		SDL_Texture* pTexture = SDL_CreateTextureFromSurface(GameWindow::GetInstance().m_pImpl->m_pRenderer, pSurface);
+
+		pGameTexture->m_pImpl->m_size = { pSurface->w, pSurface->h };
+		pGameTexture->m_pImpl->m_pTexture = pTexture;
+
+		m_pImpl->m_setTextManager.emplace(pGameTexture);
+	}
+
+	return pGameTexture;
+}
+
+GameTexture* GameTextureManager::CreateTextBlended(std::string strTextContent, GameFont* pFont, const GameColor& colorFg)
+{
+	GameTexture* pGameTexture = new GameTexture();
+
+	if (m_pImpl->m_setTextManager.find(pGameTexture) != m_pImpl->m_setTextManager.end())
+	{
+		pGameTexture = *m_pImpl->m_setTextManager.find(pGameTexture);
+	}
+	else
+	{
+		SDL_Surface* pSurface = TTF_RenderText_Blended(pFont->m_pImpl->m_pFont, strTextContent.c_str(),
+			{ colorFg.r, colorFg.g, colorFg.b, colorFg.a });
+		SDL_Texture* pTexture = SDL_CreateTextureFromSurface(GameWindow::GetInstance().m_pImpl->m_pRenderer, pSurface);
+
+		pGameTexture->m_pImpl->m_size = { pSurface->w, pSurface->h };
+		pGameTexture->m_pImpl->m_pTexture = pTexture;
+
+		m_pImpl->m_setTextManager.emplace(pGameTexture);
+	}
+
+	return pGameTexture;
+}
+
+GameTexture* GameTextureManager::CreateTextShaded(std::string strTextContent, GameFont* pFont, const GameColor& colorFg, const GameColor& colorBg)
+{	
+	GameTexture* pGameTexture = new GameTexture();
+
+	if (m_pImpl->m_setTextManager.find(pGameTexture) != m_pImpl->m_setTextManager.end())
+	{
+		pGameTexture = *m_pImpl->m_setTextManager.find(pGameTexture);
+	}
+	else
+	{
+		SDL_Surface* pSurface = TTF_RenderText_Shaded(pFont->m_pImpl->m_pFont, strTextContent.c_str(),
+			{ colorFg.r, colorFg.g, colorFg.b, colorFg.a }, { colorBg.r, colorBg.g, colorBg.b, colorBg.a });
+		SDL_Texture* pTexture = SDL_CreateTextureFromSurface(GameWindow::GetInstance().m_pImpl->m_pRenderer, pSurface);
+
+		pGameTexture->m_pImpl->m_size = { pSurface->w, pSurface->h };
+		pGameTexture->m_pImpl->m_pTexture = pTexture;
+
+		m_pImpl->m_setTextManager.emplace(pGameTexture);
+	}
+
+	return pGameTexture;
+}
+
+void GameTextureManager::DestroyText(GameTexture* pGameTexture)
+{
+	SDL_DestroyTexture(pGameTexture->m_pImpl->m_pTexture);
+	delete pGameTexture;
+}
+
+GameTexture* GameTextureManager::Get(std::string strFileName)
+{
+	return (GameTexture*)m_pImpl->m_textureManager.Get(strFileName);
+}
+
+void GameTextureManager::Render(GameTexture* pTexture, const GameRect& rectDraw,
+	const double& fAngle, const GamePoint& pointAnchor, const GameFlip& emFlip)
+{
+	m_pImpl->m_rectSrc.w = pTexture->m_pImpl->m_size.nWidth;
+	m_pImpl->m_rectSrc.h = pTexture->m_pImpl->m_size.nHeight;
+
+	m_pImpl->m_rectDst = {
+		rectDraw.x, rectDraw.y,
+		rectDraw.w, rectDraw.h
+	};
+
+	m_pImpl->m_pointAnchor = {
+		pointAnchor.x, pointAnchor.y
+	};
+
+	SDL_RenderCopyExF(
+		GameWindow::GetInstance().m_pImpl->m_pRenderer,
+		pTexture->m_pImpl->m_pTexture,
+		&m_pImpl->m_rectSrc, &m_pImpl->m_rectDst,
+		fAngle, &m_pImpl->m_pointAnchor,
+		(SDL_RendererFlip)emFlip
+		);
+}
+
+GameTextureManager::GameTextureManager()
+{
+	IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG | IMG_INIT_TIF | IMG_INIT_WEBP);
+	m_pImpl = new Impl();
+}
+
+GameTextureManager::~GameTextureManager()
+{
+	IMG_Quit();
 	delete m_pImpl;
 }
 

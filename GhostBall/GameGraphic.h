@@ -25,7 +25,7 @@ struct GameRect
 // RGBA 颜色
 struct GameColor
 {
-	int r, g, b, a;
+	unsigned char r, g, b, a;
 };
 
 // 图片翻转类型
@@ -79,6 +79,7 @@ private:
 	~GameFont();
 
 	friend class GameFontManager;
+	friend class GameTextureManager;
 };
 
 // 字体资源管理者单例类
@@ -138,20 +139,45 @@ public:
 	*/
 	bool LoadFromPack(std::string strPackName);
 
-	GameTexture* CreateTextSolid(std::string strTextContent, GameFont* pFont,
-		const GameColor& colorFg);
-
-	GameTexture* CreateTextBlended(std::string strTextContent, GameFont* pFont,
-		const GameColor& colorFg);
-
-	GameTexture* CreateTextShaded(std::string strTextContent, GameFont* pFont,
-		const GameColor& colorFg, const GameColor& colorBg);
-
 	/* 根据纹理文件名获取纹理对象指针
 	* @param 纹理文件名
 	* @return 纹理对象指针
 	*/
 	GameTexture* Get(std::string strFileName);
+
+	/* 创建 Solid 类型文本纹理，如果该文本已存在则直接返回其指针
+	* @param strTextContent: 文本内容
+	* pFont: 字体指针
+	* colorFg: 文本颜色
+	* @return 游戏纹理指针
+	*/
+	GameTexture* CreateTextSolid(std::string strTextContent, GameFont* pFont,
+		const GameColor& colorFg);
+
+	/* 创建 Blended 类型文本纹理，如果该文本已存在则直接返回其指针
+	* @param strTextContent: 文本内容
+	* pFont: 字体指针
+	* colorFg: 文本颜色
+	* @return 游戏纹理指针
+	*/
+	GameTexture* CreateTextBlended(std::string strTextContent, GameFont* pFont,
+		const GameColor& colorFg);
+
+	/* 创建 Shaded 类型文本纹理，如果该文本已存在则直接返回其指针
+	* @param strTextContent: 文本内容
+	* pFont: 字体指针
+	* colorFg: 文本颜色
+	* colorBg: 背景颜色
+	* @return 游戏纹理指针
+	*/
+	GameTexture* CreateTextShaded(std::string strTextContent, GameFont* pFont,
+		const GameColor& colorFg, const GameColor& colorBg);
+
+	/* 删除指定文本纹理
+	* @param 游戏纹理指针
+	* @return 无
+	*/
+	void DestroyText(GameTexture* pTextTexture);
 
 	/* 根据参数提供信息在窗口内绘制纹理
 	* @param pTexture: 需要绘制的纹理的指针
