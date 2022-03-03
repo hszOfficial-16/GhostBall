@@ -4,6 +4,8 @@
 #include <SDL_image.h>
 #include <SDL_ttf.h>
 
+#include <vector>
+
 #include "GameResourceManager.h"
 
 // GameWindow 实现
@@ -104,11 +106,6 @@ public:
 	}
 };
 
-const GameSize& GameTexture::GetSize()
-{
-	return m_pImpl->m_size;
-}
-
 GameTexture::GameTexture()
 {
 	m_pImpl = new Impl();
@@ -122,7 +119,16 @@ GameTexture::~GameTexture()
 class GameTextureManager::Impl
 {
 public:
+	// 图片纹理管理者
 	GameResourceManager m_textureManager;
+
+	// 文字纹理管理向量
+	std::vector<GameTexture*> m_vTextManager;
+
+	// 用于 Render 函数的辅助成员
+	SDL_Rect	m_rectSrc;
+	SDL_FRect	m_rectDst;
+	SDL_FPoint	m_pointAnchor;
 
 public:
 	Impl()
@@ -134,8 +140,27 @@ public:
 			pGameTexture->m_pImpl->m_size.nWidth = pSurface->w;
 			pGameTexture->m_pImpl->m_size.nHeight = pSurface->h;
 			pGameTexture->m_pImpl->m_pTexture = pTexture;
+			SDL_FreeSurface(pSurface);
 			return (void*)pGameTexture;
 			});
+
+		m_textureManager.SetDeconstructFunc([](void* pObject) {
+			GameTexture* pGameTexture = (GameTexture*)pObject;
+			SDL_DestroyTexture(pGameTexture->m_pImpl->m_pTexture);
+			});
+
+		m_rectSrc = { 0, 0, 0, 0 };
+		m_rectDst = { 0.0f, 0.0f, 0.0f, 0.0f };
+		m_pointAnchor = { 0.0f, 0.0f };
+	}
+
+	~Impl()
+	{
+		for (int i = m_vTextManager.size() - 1; i >= 0; i--)
+		{
+			SDL_DestroyTexture(m_vTextManager[i]->m_pImpl->m_pTexture);
+			delete m_vTextManager[i];
+		}
 	}
 };
 
@@ -149,9 +174,48 @@ bool GameTextureManager::LoadFromPack(std::string strPackName)
 	return m_pImpl->m_textureManager.LoadFromPack(strPackName);
 }
 
+GameTexture* GameTextureManager::CreateTextSolid(std::string strTextContent, GameFont* pFont, const GameColor& colorFg)
+{
+
+}
+
+GameTexture* GameTextureManager::CreateTextBlended(std::string strTextContent, GameFont* pFont, const GameColor& colorFg)
+{
+
+}
+
+GameTexture* GameTextureManager::CreateTextShaded(std::string strTextContent, GameFont* pFont, const GameColor& colorFg, const GameColor& colorBg)
+{
+
+}
+
 GameTexture* GameTextureManager::Get(std::string strFileName)
 {
 	return (GameTexture*)m_pImpl->m_textureManager.Get(strFileName);
+}
+
+void GameTextureManager::Render(GameTexture* pTexture, const GameRect& rectDraw,
+	const double& fAngle, const GamePoint& pointAnchor, const GameFlip& emFlip)
+{
+	m_pImpl->m_rectSrc.w = pTexture->m_pImpl->m_size.nWidth;
+	m_pImpl->m_rectSrc.h = pTexture->m_pImpl->m_size.nHeight;
+
+	m_pImpl->m_rectDst = {
+		rectDraw.x, rectDraw.y,
+		rectDraw.w, rectDraw.h
+	};
+
+	m_pImpl->m_pointAnchor = {
+		pointAnchor.x, pointAnchor.y
+	};
+
+	SDL_RenderCopyExF(
+		GameWindow::GetInstance().m_pImpl->m_pRenderer,
+		pTexture->m_pImpl->m_pTexture,
+		&m_pImpl->m_rectSrc, &m_pImpl->m_rectDst,
+		fAngle, &m_pImpl->m_pointAnchor,
+		(SDL_RendererFlip)emFlip
+		);
 }
 
 GameTextureManager::GameTextureManager()
@@ -211,6 +275,11 @@ public:
 			pGameFont->m_pImpl->m_pFont = pFont;
 			return (void*)pGameFont;
 			});
+
+		m_fontManager.SetDeconstructFunc([](void* pObject) {
+			GameFont* pGameFont = (GameFont*)pObject;
+			TTF_CloseFont(pGameFont->m_pImpl->m_pFont);
+			});
 	}
 };
 
@@ -222,6 +291,11 @@ bool GameFontManager::LoadFromFilter(std::string strFilterPath)
 bool GameFontManager::LoadFromPack(std::string strPackName)
 {
 	return m_pImpl->m_fontManager.LoadFromPack(strPackName);
+}
+
+GameFont* GameFontManager::Get(std::string strFileName)
+{
+	return (GameFont*)m_pImpl->m_fontManager.Get(strFileName);
 }
 
 GameFontManager::GameFontManager()
@@ -238,14 +312,14 @@ GameFontManager::~GameFontManager()
 
 // GameImage 实现
 
-GameImage* GameImageManager::CreateStaticImage(GameTexture* pGameTexture)
+GameImage* GameImageFactory::CreateStaticImage(GameTexture* pGameTexture)
 {
 	GameImage* arrImages = new GameImage[1];
 	arrImages[0] = { pGameTexture , 0 };
 	return arrImages;
 }
 
-GameImage* GameImageManager::CreateDynamicImage(std::initializer_list<GameImage>& ilFrames)
+GameImage* GameImageFactory::CreateDynamicImage(std::initializer_list<GameImage>& ilFrames)
 {
 	GameImage* arrImages = new GameImage[ilFrames.size()];
 	for (int index = 0; index < ilFrames.size(); index++)
@@ -255,7 +329,7 @@ GameImage* GameImageManager::CreateDynamicImage(std::initializer_list<GameImage>
 	return arrImages;
 }
 
-void GameImageManager::DestroyImage(GameImage* pGameImage)
+void GameImageFactory::DestroyImage(GameImage* pGameImage)
 {
 	if (pGameImage)
 	{

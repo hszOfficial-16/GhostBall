@@ -90,8 +90,8 @@ void GameResourceManager::ClearAllResource()
 		if (m_pImpl->m_funcDeconstructResource)
 		{
 			m_pImpl->m_funcDeconstructResource((*iter).second);
-			delete (*iter).second;
 		}
+		delete (*iter).second;
 	}
 }
 

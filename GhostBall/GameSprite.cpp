@@ -6,7 +6,7 @@
 class GameSprite::Impl
 {
 public:
-	GamePosition			m_position;
+	GamePoint			m_position;
 	float					m_fAngle;
 	GameFlip				m_emFlip;
 	int						m_nZOrder;
@@ -25,7 +25,7 @@ public:
 	}
 };
 
-GamePosition GameSprite::GetPosition()
+GamePoint GameSprite::GetPosition()
 {
 	if (!m_pImpl->m_pBody)
 	{
@@ -63,7 +63,7 @@ const int& GameSprite::GetZOrder()
 	return m_pImpl->m_nZOrder;
 }
 
-void GameSprite::SetPosition(const GamePosition& position)
+void GameSprite::SetPosition(const GamePoint& position)
 {
 	if (!m_pImpl->m_pBody)
 	{
@@ -117,7 +117,7 @@ class GameSpriteManager::Impl
 	
 };
 
-GameSprite* GameSpriteManager::CreateSprite(const GamePosition& position, const float& fAngle, const int& nZOrder)
+GameSprite* GameSpriteManager::CreateSprite(const GamePoint& position, const float& fAngle, const int& nZOrder)
 {
 	GameSprite* pSprite = new GameSprite();
 	pSprite->m_pImpl->m_position = position;

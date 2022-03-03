@@ -8,12 +8,12 @@
 class GameSprite
 {
 public:
-	GamePosition		GetPosition();
+	GamePoint		GetPosition();
 	const float&		GetAngle();
 	const GameFlip&		GetFlip();
 	const int&			GetZOrder();
 
-	void				SetPosition(const GamePosition& position);
+	void				SetPosition(const GamePoint& position);
 	void				SetAngle(const float& fAngle);
 	void				SetFlip(const GameFlip& emFlip);
 	void				SetZOrder(const int& nZOrder);
@@ -34,7 +34,7 @@ private:
 class GameSpriteManager
 {
 public:
-	GameSprite* CreateSprite(const GamePosition& position = { 0.0f, 0.0f }, const float& fAngle = 0.0f, const int& nZOrder = 0);
+	GameSprite* CreateSprite(const GamePoint& position = { 0.0f, 0.0f }, const float& fAngle = 0.0f, const int& nZOrder = 0);
 	GameSprite* CreateSpriteWithBody(b2World* pWorld, const b2BodyDef* pBodyDef, const int& nZOrder);
 	b2Body*		CreateBodyOnSprite(GameSprite* pSprite, b2World* pWorld);
 

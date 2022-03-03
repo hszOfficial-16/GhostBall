@@ -4,7 +4,7 @@
 #include <string>
 
 /* 负责管理游戏资源的生命周期
-并不负责管理其内存分配
+使用 C++ 默认的内存分配方式
 */
 class GameResourceManager
 {
